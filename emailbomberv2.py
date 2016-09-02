@@ -5,6 +5,13 @@
 #import sys
 import smtplib as s
 import getpass
+def spam(num, email, msg, username, password):
+    for i in range(num):
+        server = s.SMTP('smtp.gmail.com', 587)
+        server.ehlo()
+        server.starttls()
+        server.login(username, password)
+        server.sendmail(email, email, msg)
 
 loop = 1
 
@@ -22,24 +29,14 @@ print ("""What do you want to bomb?
 option = input()
 
 if option == 1:
-    
-    def spam(num, email, msg, username, password):
-        for i in range(num):
-            server = s.SMTP('smtp.gmail.com', 587)
-            server.ehlo()
-            server.starttls()
-            server.login(username, password)
-            server.sendmail(email, email, msg)
-
-while (loop == 1):
-
-    amount = int(input("How many emails do you want to send?: "))
-    email = input("What's their email?: ")
-    msg = input("What are we sending them?: ")
-    spam(amount, email, msg, username, password)
-    print ("Your email(s) has been sent to"), email
-    more  = input("Would you like to send anymore emails?: ")
-    loop = (more.lower().strip() == "y" or "yes"  or "fuckyeah")
+    while (loop == 1):
+        amount = int(input("How many emails do you want to send?: "))
+        email = input("What's their email?: ")
+        msg = input("What are we sending them?: ")
+        spam(amount, email, msg, username, password)
+        print ("Your email(s) has been sent to"), email
+        more  = input("Would you like to send anymore emails?: ")
+        loop = (more.lower().strip() == "y" or "yes"  or "fuckyeah")
 
 
 
