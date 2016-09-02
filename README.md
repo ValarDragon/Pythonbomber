@@ -1,1 +1,1 @@
-The goal of this project is the create a easy to use script that allows someone to send a mass amount of emails and text messages to a single destination. 
+The goal of this project is the create a easy to use script that allows someone to send a mass amount of emails and text messages to a single destination. NOTE: This code does not work right now,it totally skips the SMS feature. 
