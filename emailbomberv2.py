@@ -1,46 +1,41 @@
-
-#ChangeLog: Added user and password input
-
-
-#import sys
 import smtplib as s
 import getpass
-def spam(num, email, msg, username, password):
-    for i in range(num):
-        server = s.SMTP('smtp.gmail.com', 587)
-        server.ehlo()
-        server.starttls()
-        server.login(username, password)
-        server.sendmail(email, email, msg)
+import sys
+import traceback
 
-loop = 1
+def main():
+    print("Enter in your email and password\n\r")
+    global username
+    global password
+    username = input("Gmail username: ")
+    password = getpass.getpass(prompt = "Gmail password: ")
 
-print("Enter in your email and password\n\r")
+    print ("""What do you want to bomb?
+        1. Email
+        2. SMS
 
-username = input("Gmail username: ")
-password = getpass.getpass(prompt = "Gmail password: ")
+        """)
 
-print ("""What do you want to bomb?
-    1.Email
-    2.SMS
-        
-    """)
+    option = int(input())
+    if(option==1):
+        email()
+    elif(option==2):
+        sms()
 
-option = input()
-
-if option == 1:
+def email():
+    loop = 1
     while (loop == 1):
-        amount = int(input("How many emails do you want to send?: "))
-        email = input("What's their email?: ")
-        msg = input("What are we sending them?: ")
-        spam(amount, email, msg, username, password)
+        amount = int(input("How many emails do you want to send?:\n "))
+        email = input("What's their email?:\n ")
+        msg = input("What is the header?:\n ")
+        msg += '\n ' + input("What are we sending them?:\n ")
+        spam(amount, email, msg)
         print ("Your email(s) has been sent to"), email
-        more  = input("Would you like to send anymore emails?: ")
+        more  = input("Would you like to send anymore emails?:\n ")
         loop = (more.lower().strip() == "y" or "yes"  or "fuckyeah")
 
 
-
-if option == 2:
+def sms():
     carrier_address = 0
 
     print ("""What carrier?
@@ -50,10 +45,9 @@ if option == 2:
             4.VERIZON
             """)
     carrier = input()
-
     if carrier == 1:
         carrier_address = "@txt.att.net"
-    
+
     if carrier == 2:
         carrier_address = "@messaging.sprintpcs.com"
 
@@ -62,13 +56,26 @@ if option == 2:
 
     if carrier == 4:
         carrier_address = "@vtext.com"
-    
+
     amountsms = int(input("How many do you want to send?"))
     phone = input("Phone number: ") + str(carrier_address)
     message = input("Message: ")
 
-    while(loop == 1): 
-        server.sendmail(username,phone,message)
+    spam(amountsms,phone,message)
     print("Sending messages...")
 
 
+def spam(num, email, msg):
+    server = s.SMTP('smtp.gmail.com:587')
+    server.ehlo()
+    server.starttls()
+    server.ehlo()
+    server.login(username, password)
+
+    for i in range(num):
+        try:
+            server.sendmail(username, email, msg)
+        except:
+            print(str(traceback.format_exc()))
+    server.quit()
+main()
