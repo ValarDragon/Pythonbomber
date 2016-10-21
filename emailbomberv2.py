@@ -36,7 +36,7 @@ def email():
 
 
 def sms():
-    carrier_address = 0
+    carrier_address = "a"
 
     print ("""What carrier?
             1.AT&T
@@ -44,7 +44,7 @@ def sms():
             3.T-MOBILE
             4.VERIZON
             """)
-    carrier = input()
+    carrier = int(input())
     if carrier == 1:
         carrier_address = "@txt.att.net"
 
@@ -74,6 +74,7 @@ def spam(num, email, msg):
 
     for i in range(num):
         try:
+            print(email)
             server.sendmail(username, email, msg)
         except:
             print(str(traceback.format_exc()))
