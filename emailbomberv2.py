@@ -2,13 +2,26 @@ import smtplib as s
 import getpass
 import sys
 import traceback
-
+import configparser
+#http://stackoverflow.com/questions/19379120/how-to-read-a-config-file-using-python
 def main():
-    print("Enter in your email and password\n\r")
     global username
     global password
-    username = input("Gmail username: ")
-    password = getpass.getpass(prompt = "Gmail password: ")
+
+    global config
+    config = configparser.ConfigParser()
+    config.read('config.ini')
+    if('username' in config['email']):
+        username = config['email']['username']
+        print("hello " + username)
+    else:
+        print("Enter in your gmail username\n\r")
+        username = input("Gmail username: ")
+    if('password' in config['email']):
+        password = config['email']['password']
+    else:
+        print("Enter in your gmail password\n\r")
+        password = getpass.getpass(prompt = "Gmail password: ")
 
     print ("""What do you want to bomb?
         1. Email
@@ -36,7 +49,7 @@ def email():
 
 
 def sms():
-    carrier_address = "a"
+    carrier_address = ""
 
     print ("""What carrier?
             1.AT&T
@@ -47,14 +60,11 @@ def sms():
     carrier = int(input())
     if carrier == 1:
         carrier_address = "@txt.att.net"
-
-    if carrier == 2:
+    elif carrier == 2:
         carrier_address = "@messaging.sprintpcs.com"
-
-    if carrier == 3:
+    elif carrier == 3:
         carrier_address = "@tmomail.net"
-
-    if carrier == 4:
+    elif carrier == 4:
         carrier_address = "@vtext.com"
 
     amountsms = int(input("How many do you want to send?"))
