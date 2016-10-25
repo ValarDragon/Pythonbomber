@@ -43,8 +43,6 @@ def startup():
     main()
 
 def main():
-
-
     print ("""What do you want to bomb?
         1. Email
         2. SMS
