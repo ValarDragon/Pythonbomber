@@ -60,6 +60,10 @@ def email():
     while (loop == 1):
         amount = int(input("How many emails do you want to send?:\n "))
         email = input("What's their email?:\n ")
+        if(not ("@" in email)):
+            contactbook = config._sections['contact_book']
+            if(email.lower().strip() in contactbook):
+                email = contactbook[email.lower().strip()]
         msg = input("What is the header?:\n ")
         msg += '\n ' + input("What are we sending them?:\n ")
         spam(amount, email, msg)
