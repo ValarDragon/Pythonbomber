@@ -64,13 +64,26 @@ def email():
             contactbook = config._sections['contact_book']
             if(email.lower().strip() in contactbook):
                 email = contactbook[email.lower().strip()]
-        msg = input("What is the header?:\n ")
-        msg += '\n ' + input("What are we sending them?:\n ")
-        spam(amount, email, msg)
-        print ("Your email(s) has been sent to"), email
-        more  = input("Would you like to send anymore emails?:\n ")
-        loop = (more.lower().strip() == "y" or "yes"  or "fuckyeah")
 
+        subject = input("What is the subject line of your message?:\n ")
+        msg = input("What are we sending them?:\n ")
+
+        if("," in email):
+            email = email.split(',')
+            for i in (email):
+                spam(amount, i, formatMessage(subject,msg,i))
+        else:
+            spam(amount, email, formatMessage(subject,msg,email))
+        print(("Your email(s) has been sent to %s") % str(email))
+
+def formatMessage(subject,msg,email):
+    headers = ["from: " + username,
+                   "to: " + email,
+                   "subject: " + subject,
+                   "content_type: text/html"]
+    headers = "\r\n".join(headers)
+    headers += "\r\n\r\n" + msg
+    return headers
 
 def sms():
     carrier_address = ""
@@ -98,7 +111,6 @@ def sms():
     spam(amountsms,phone,message)
     print("Sending messages...")
 
-
 def spam(num, email, msg):
     server = s.SMTP('smtp.gmail.com:587')
     server.ehlo()
@@ -115,5 +127,5 @@ def spam(num, email, msg):
     if(isLogging):
         logger.debug(str(num) + ' email(s) sent to ' + email + ' with content ' + msg)
     server.quit()
-    main()
+
 startup()
