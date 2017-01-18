@@ -86,26 +86,32 @@ def formatMessage(subject,msg,email):
     return headers
 
 def sms():
-    carrier_address = ""
+    phone = input("Phone number: ")
+    if(re.search('[a-zA-Z]', phone)):
+        contactbook = config._sections['contact_book']
+        if(phone.lower().strip() in contactbook):
+            phone = contactbook[phone.lower().strip()]
+    else:
+        carrier_address = ""
 
-    print ("""What carrier?
-            1.AT&T
-            2.SPRINT
-            3.T-MOBILE
-            4.VERIZON
-            """)
-    carrier = int(input())
-    if carrier == 1:
-        carrier_address = "@txt.att.net"
-    elif carrier == 2:
-        carrier_address = "@messaging.sprintpcs.com"
-    elif carrier == 3:
-        carrier_address = "@tmomail.net"
-    elif carrier == 4:
-        carrier_address = "@vtext.com"
+        print ("""What carrier?
+                1.AT&T
+                2.SPRINT
+                3.T-MOBILE
+                4.VERIZON
+                """)
+        carrier = int(input())
+        if carrier == 1:
+            carrier_address = "@txt.att.net"
+        elif carrier == 2:
+            carrier_address = "@messaging.sprintpcs.com"
+        elif carrier == 3:
+            carrier_address = "@tmomail.net"
+        elif carrier == 4:
+            carrier_address = "@vtext.com"
+        phone += str(carrier_address)
 
-    amountsms = int(input("How many do you want to send?"))
-    phone = input("Phone number: ") + str(carrier_address)
+    amountsms = int(input("How many texts do you want to send?"))
     message = input("Message: ")
 
     spam(amountsms,phone,message)
