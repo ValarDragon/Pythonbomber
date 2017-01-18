@@ -4,6 +4,7 @@ import sys
 import traceback
 import configparser
 import logging
+import re
 from logging.config import fileConfig
 
 #http://stackoverflow.com/questions/19379120/how-to-read-a-config-file-using-python
