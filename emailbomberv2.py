@@ -15,32 +15,38 @@ def setupLogging():
     logger.debug("Program started")
 
 def startup():
+    import os.path
     global username
     global password
+    global isLogging
+    isLogging = False
 
     global config
+
     config = configparser.ConfigParser()
-    config.read('config.ini')
+    if(os.path.isfile('config.ini')):
+        config.read('config.ini')
 
-    if('username' in config['email']):
-        username = config['email']['username']
-        print("hello " + username)
-    else:
-        print("Enter in your gmail username\n\r")
-        username = input("Gmail username: ")
+        if('username' in config['email']):
+            username = config['email']['username']
+            print("hello " + username)
+        else:
+            print("Enter in your gmail username\n\r")
+            username = input("Gmail username: ")
 
-    if('password' in config['email']):
-        password = config['email']['password']
+        if('password' in config['email']):
+            password = config['email']['password']
+        else:
+            print("Enter in your gmail password\n\r")
+            password = getpass.getpass(prompt = "Gmail password: ")
+        if('1' in config['email']['logging']):
+            isLogging = True
+            setupLogging()
+        else:
+            isLogging = False
     else:
-        print("Enter in your gmail password\n\r")
-        password = getpass.getpass(prompt = "Gmail password: ")
-
-    global isLogging
-    if('1' in config['email']['logging']):
-        isLogging = True
-        setupLogging()
-    else:
-        isLogging = False
+        config.add_sections('contact_book')
+        config['contact_book']['testSoThisSectionHas1Entry'] = 'foobar'
     main()
 
 def main():
